@@ -1,30 +1,40 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Book from './Book'
+// import * as BookApi from '../utils/BooksAPI'
+
 class SearchBar extends Component {
 
-  showBooks(books){
+  showBooks(books) {
     // console.log('books ',books);
-    return books.length>0 ? this.props.books.map((book)=><li key={book.id}><Book book={book}/ ></li>)
-    :<h2> NO DATA</h2>
+    return books.length > 0
+      ? this.props.books.map((book, i) =>
+          <li key={i}>
+            <Book onMoveToShelf={this.props.onMoveToShelf} book={book} />
+          </li>
+        )
+      : <h2> NO BOOKS FOUND</h2>
   }
-
   render() {
-    let {books}= this.props
+    let { books } = this.props
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <Link className="close-search" to="/">Close</Link>
+          <Link className="close-search" to="/">
+            Close
+          </Link>
           <div className="search-books-input-wrapper">
-            <input type="text" placeholder="Search by title or author"
+            <input
+              type="text"
+              placeholder="Search by title or author"
               value={this.props.query}
-              onChange={(event)=> this.props.onQueryChange(event.target.value)}
-             />
+              onChange={event => this.props.onQueryChange(event.target.value)}
+            />
           </div>
         </div>
         <div className="search-books-results">
-          {JSON.stringify(this.props.query)}
-          <ol  className="books-grid">
+          {/* {JSON.stringify(this.props.query)} */}
+          <ol className="books-grid">
             {this.showBooks(books)}
           </ol>
         </div>

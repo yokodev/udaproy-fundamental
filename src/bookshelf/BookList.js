@@ -3,9 +3,9 @@ import Book from './Book'
 
 class BookList extends Component {
   render() {
-    console.log('PROPS: ',this.props);
+    // console.log('PROPS: ',this.props);
     let { title, books=[] } =this.props;
-    console.log(`books for ${title} `, this.props.books);
+    // console.log(`books for ${title} `, this.props.books);
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{title}</h2>
