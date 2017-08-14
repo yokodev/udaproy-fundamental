@@ -10,7 +10,6 @@ import PropTypes from 'prop-types'
 
 const Book = ({book, onMoveToShelf}) => {
   let { title, authors, imageLinks: { thumbnail = 'nodata' } = 'nodata', shelf } = book
-  // console.log('title ',title);
   return (
     <div className="book">
       <div className="book-top">

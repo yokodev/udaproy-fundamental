@@ -59,9 +59,10 @@ class App extends Component {
   moveToShelf = (book, from, to) => {
     BookApi.update(book, to)
       .then(data => {
-        console.log('data de update ', data)
+        // console.log('data de update ', data)
+        this.getAllBooks()
       })
-      .then(() => this.getAllBooks())
+      // .then(() => this.getAllBooks())
       .catch(error => console.log('error ', error))
   }
 
@@ -116,7 +117,6 @@ class App extends Component {
 
   render() {
     let { query, querybooks, books } = this.state
-    console.log('querybooks ', querybooks)
     return (
       <div className="App">
         <Route exact path="/search" render={history =>
