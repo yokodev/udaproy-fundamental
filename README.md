@@ -1,29 +1,33 @@
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+# MyReads (Udacity nanodegree first project)
 
-Below you will find some information on how to perform common tasks.<br>
-You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+This is my first project from Udacity's nanodegree on React, React Fundamentals
+
+### Prerequisites
+
+node     
+I'm using v 7.10.0
 
 
+### Installing
 
-Backend Server
+First you need to get a copy of the App into your machine
 
-To simplify your development process, we've provided a backend server for you to develop against. The provided file BooksAPI.js contains the methods you will need to perform necessary operations on the backend:
+clone it and cd into the directory, install dependencies via YARN or NPM and start it up
 
-getAll()
+```
+git clone  https://github.com/jatcode/udaproy-fundamental.git my-reads
+cd my-reads/
+yarn
+yarn start
+```
 
-Returns a Promise which resolves to a JSON object containing a collection of book objects.
-This collection represents the books currently in the bookshelves in your app.
-update(book, shelf)
+That's it
 
-book: <Object> containing at minimum an id attribute
-shelf: <String> contains one of ["wantToRead", "currentlyReading", "read"]
-Returns a Promise which resolves to a JSON object containing the response data of the POST request
-search(query, maxResults)
 
-query: <String>
-maxResults: <Integer> Due to the nature of the backend server, search results are capped at 20, even if this is set higher.
-Returns a Promise which resolves to a JSON object containing a collection of book objects.
-These books do not know which shelf they are on. They are raw results only. You'll need to make sure that books have the correct state while on the search page.
-Important
+## Built With
 
-The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in SEARCH_TERMS.md. That list of terms are the only terms that will work with the backend, so don't be surprised if your searches for Basket Weaving or Bubble Wrap don't come back with any results.
+* [Create React App](https://github.com/facebookincubator/create-react-app)  
+
+## Authors
+
+* **Jesus  Amaya** -  [yokodev](https://github.com/yokodev) 
