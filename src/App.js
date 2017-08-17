@@ -9,7 +9,7 @@ class App extends Component {
   state = {
     query: '',
     books: [],
-    joinedbooks:[]
+    joinedbooks: []
   }
 
   componentDidMount() {
@@ -25,16 +25,14 @@ class App extends Component {
   }
 
   /**
-   * filterBooksbyShelf - Filter the books in the state according to its shelf
+   * filterBooksbyShelf - Filter the books from the state according to its shelf name
    *
-   * @param {array} [books=[]] Description
+   * @param {array} books books comming from this.state.books
    *
    * @return {arrary} One shelf array per category (currentlyReading, wantToRead, read)
    */
   filterBooksbyShelf(books = []) {
-    let cr = [],
-      wr = [],
-      r = []
+    let cr = [], wr = [], r = []
     for (let book of books) {
       book.shelf === 'currentlyReading' && cr.push(book)
       book.shelf === 'wantToRead' && wr.push(book)
@@ -52,101 +50,85 @@ class App extends Component {
 
   /**
    * moveToShelf - Moves a book between shelfs
-   * @param {type} book The Book
-   * @param {type} from from shelf
-   * @param {type} to   to Shelf
+   * @param {object} book The Book
+   * @param {string} to   to Shelf
    */
   moveToShelf = (book, to) => {
     BookApi.update(book, to)
       .then(data => {
-        console.log('dataUPDate: ',data);
-          this.getAllBooks()
+        this.getAllBooks()
       })
-      // .then(() => this.getAllBooks())
       .catch(error => console.log('error ', error))
   }
 
-
-  changeBooksIds =(books=[], qBooks=[])=>{
+  /**
+   * changeBooksIds - search for a repeated book within the querybooks
+   *
+   * @param {array} [books=[]]  array of books currently in the shelfs
+   * @param {array} [qBooks=[]] array of books from the query via API
+   *
+   * @return {array} books from the query with modified shelf, if found
+   */
+  changeBooksIds = (books = [], qBooks = []) => {
     for (let book of books) {
       for (let qBook of qBooks) {
-        if(book.id === qBook.id){
-          console.log('changed');
-          qBook.shelf = book.shelf
-          console.log(`changed ${qBook.title} with shelf : ${qBook.shelf}`);
+        (book.id === qBook.id) && (qBook.shelf = book.shelf)
         }
       }
-    }
     return qBooks
   }
 
   /**
   * joinBooksQuery - Joins/concats the mainShelf with the books comming from the query
   *
-  * @param {type}  mainShelf         Books in the mainShelf. All tree (currentlyReading, wantToRead, read)
-  * @param {array} [queryresults=[]] Books comming from the API via query
+  * @param {array}  mainShelf       Books in the mainShelf. All tree (currentlyReading, wantToRead, read)
+  * @param {array}  queryresults    Books comming from the API via query
   *
   * @return {array} Returns an array of the combination of books between the mainShelf and the queryresults
   */
 
-  joinBooksQuery = (mainShelf=[], queryresults = []) => {
-    debugger;
-    (mainShelf.length>0 || queryresults.length>0)
-    ? this.setState({joinedbooks: this.changeBooksIds(mainShelf,queryresults) })
-    : this.setState({joinedbooks: [] })
+  joinBooksQuery = (mainShelf = [], queryresults = []) => {
+    mainShelf.length > 0 || queryresults.length > 0
+      ? this.setState({ joinedbooks: this.changeBooksIds(mainShelf, queryresults) })
+      : this.setState({ joinedbooks: [] })
   }
 
   /** executeQuery - Execute the query according to the input in the SearchBar
   *
-  * @param {type} query String with the search query
-  *
-  * @return {type} sets the query-books state
+  * @param {string} query String with the search query
   */
   executeQuery = query => {
     BookApi.search(query)
-        .then(data => {
-          console.log('this is the data query-books ',data);
-          (data.error && data.items.length===0)
-          ? this.resetJoinedBooks()
-          : this.joinBooksQuery(this.state.books, data)
-        })
-        .catch(err => console.log(`Error : ${err}`))
+      .then(data => {
+        data.error && data.items.length === 0 ? this.resetJoinedBooks() : this.joinBooksQuery(this.state.books, data)
+      })
+      .catch(err => console.log(`Error : ${err}`))
   }
 
   /**
    * updateQuery - Helper function for the executeQuery function
    */
   updateQuery = query => {
-    if(query && query !== ""){
+    if (query && query !== '') {
       this.setState({ query: query.trim() })
       this.executeQuery(this.state.query)
     }
-    this.setState({ query: '',joinedbooks:[] })//ojoooooooooooooooooooo
+    this.setState({ query: '', joinedbooks: [] })
   }
 
-  resetJoinedBooks = ()=>{
+  resetJoinedBooks = () => {
     this.setState({ joinedbooks: [] })
-
   }
 
   render() {
-    const { query,joinedbooks  } = this.state
+    const { moveToShelf, updateQuery, resetJoinedBooks, state: { joinedbooks } } = this
     return (
       <div className="App">
-        <Route exact path="/search" render={history =>
-            <SearchBar
-              query={query}
-              joinedBooks={joinedbooks}
-              onMoveToShelf={this.moveToShelf}
-              onQueryChange={this.updateQuery}
-            />}
+        <Route exact path="/" render={() =>
+          <BookShelf resetJoinedBooks={resetJoinedBooks} books={this.createShelfs()} onMoveToShelf={moveToShelf} />}
         />
-        <Route exact path="/" render={history =>
-            <BookShelf
-              history={history}
-              resetJoinedBooks={this.resetJoinedBooks}
-              books={this.createShelfs()}
-              onMoveToShelf={this.moveToShelf} />}
+        <Route  exact path="/search" render={() =>
+          <SearchBar joinedBooks={joinedbooks} onMoveToShelf={moveToShelf} onQueryChange={updateQuery} />}
         />
       </div>
     )

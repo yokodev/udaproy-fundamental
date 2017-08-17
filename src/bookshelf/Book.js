@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 
 /**
  * Book - SFC(Stateless functional component ) to display the books (objects) comming from the API
- * @param {object} book               The object to display
- * @param {function} onMoveToShelf function to fire whenever a book needs to change to a different shelf
+ * @param {object} book               book info comming from the API
+ * @param {function} onMoveToShelf    function to fire whenever a book needs to change to a different shelf
  */
 
 const Book = ({ book, onMoveToShelf }) => {

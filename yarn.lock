@@ -2422,7 +2422,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@^0.8.4, fbjs@^0.8.9:
+fbjs@^0.8.9:
   version "0.8.14"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.14.tgz#d1dbe2be254c35a91e09f31f9cd50a40b2a0ed1c"
   dependencies:
@@ -4227,10 +4227,6 @@ object-keys@^1.0.8:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.11.tgz#c54601778ad560f1142ce0e01bcca8b56d13426d"
 
-object-path@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/object-path/-/object-path-0.6.0.tgz#b69a7d110937934f336ca561fd9be1ad7b7e0cb7"
-
 object.omit@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/object.omit/-/object.omit-2.0.1.tgz#1a9c744829f39dbb858c76ca3579ae2a54ebd1fa"
@@ -4939,13 +4935,6 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-addons-perf@^15.4.2:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-addons-perf/-/react-addons-perf-15.4.2.tgz#110bdcf5c459c4f77cb85ed634bcd3397536383b"
-  dependencies:
-    fbjs "^0.8.4"
-    object-assign "^4.1.0"
-
 react-dev-utils@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-3.0.2.tgz#1a42263e9b6aa11dcb45d69dfe5eb1b354bd5531"
@@ -5563,12 +5552,6 @@ sockjs@0.3.18:
   dependencies:
     faye-websocket "^0.10.0"
     uuid "^2.0.2"
-
-sort-by@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/sort-by/-/sort-by-1.2.0.tgz#ed92bbff9fd2284b41f6503e38496607b225fe6f"
-  dependencies:
-    object-path "0.6.0"
 
 sort-keys@^1.0.0:
   version "1.1.2"
