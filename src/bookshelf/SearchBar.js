@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { debounce } from 'throttle-debounce'
 import Book from './Book'
+// import * as BookApi from '../utils/BooksAPI'
+// import sortBy from 'sort-by';
 
 /**
  * SearchBar - SearchBar Component for books comming from the API.
@@ -33,7 +35,20 @@ class SearchBar extends Component {
    *
    * @return {type} Book array to show
    */
-  chooseBooks = (queryBooks, joinedBooks) => (joinedBooks.length > 0 ? joinedBooks : queryBooks)
+  componentDidMount(){
+    // this.showBooks([],null);
+  }
+  // componentWillReceiveProps(nextProps){
+  //   console.log('componentWillReceiveProps nextProps: ',nextProps);
+  // }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   console.log(' shouldComponentUpdate Props: ',this.props);
+  //   console.log(' shouldComponentUpdate nextProps: ',nextProps);
+  //   console.log('equal: ', this.props.onMoveToshelf === nextProps.onMoveToshelf);
+  //   // console.log('shouldComponentUpdate nextState: ',nextState);
+  //   return true
+  // }
+
 
   /**
    * showBooks - Traverses the books given to the component in either @queryBooks or @joinedBooks
@@ -41,32 +56,34 @@ class SearchBar extends Component {
    * @param {array} [joinedBooks=[]] Shelf Books plus the queryBooks
    * @param {type}  onMoveToShelf    Move to Shelf handler
    */
-  showBooks(queryBooks = [], joinedBooks = [], onMoveToShelf) {
-    let booksToShow = this.chooseBooks(queryBooks, joinedBooks)
-    // console.log('books ',books);
-    return booksToShow.length > 0
-      ? booksToShow.map((book, i) =>
+  showBooks(joinedBooks = [], onMoveToShelf) {
+    console.log('joinedBooks: ',joinedBooks);
+    console.log('QUERY...',this.props.query);
+    console.log('ENTRO....');
+    return joinedBooks.length > 0
+      ? joinedBooks.map((book, i) =>
           <li key={i}>
             <Book book={book} onMoveToShelf={onMoveToShelf} />
           </li>
         )
       : <h3> No books found..., Please try again with a different query</h3>
   }
+
   render() {
-    let { queryBooks, joinedBooks, onMoveToShelf } = this.props
+    const {  joinedBooks, onMoveToShelf } = this.props
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <Link className="close-search" to="/">
-            {' '}Close
-          </Link>
+          <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
             <input type="text" placeholder="Search by title or author" onKeyUp={this.makeChange.bind(this)} />
           </div>
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.showBooks(queryBooks, joinedBooks, onMoveToShelf)}
+            {/* {(query ==="")? this.showBooks([], onMoveToShelf): this.showBooks(joinedBooks, onMoveToShelf)} */}
+            {this.showBooks(joinedBooks, onMoveToShelf)}
           </ol>
         </div>
       </div>
@@ -76,9 +93,7 @@ class SearchBar extends Component {
 
 SearchBar.propTypes = {
   query: PropTypes.string.isRequired,
-  books: PropTypes.array,
   joinedBooks: PropTypes.array,
-  queryBooks: PropTypes.array,
   onMoveToShelf: PropTypes.func.isRequired,
   onQueryChange: PropTypes.func.isRequired
 }

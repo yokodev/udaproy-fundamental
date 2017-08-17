@@ -9,7 +9,7 @@ class App extends Component {
   state = {
     query: '',
     books: [],
-    querybooks: []
+    joinedbooks:[]
   }
 
   componentDidMount() {
@@ -56,81 +56,97 @@ class App extends Component {
    * @param {type} from from shelf
    * @param {type} to   to Shelf
    */
-  moveToShelf = (book, from, to) => {
+  moveToShelf = (book, to) => {
     BookApi.update(book, to)
       .then(data => {
-        // console.log('data de update ', data)
-        this.getAllBooks()
+        console.log('dataUPDate: ',data);
+          this.getAllBooks()
       })
       // .then(() => this.getAllBooks())
       .catch(error => console.log('error ', error))
   }
 
+
+  changeBooksIds =(books=[], qBooks=[])=>{
+    for (let book of books) {
+      for (let qBook of qBooks) {
+        if(book.id === qBook.id){
+          console.log('changed');
+          qBook.shelf = book.shelf
+          console.log(`changed ${qBook.title} with shelf : ${qBook.shelf}`);
+        }
+      }
+    }
+    return qBooks
+  }
+
   /**
-  * joinQueryShelf - Joins/concats the mainShelf with the books comming from the query
+  * joinBooksQuery - Joins/concats the mainShelf with the books comming from the query
   *
   * @param {type}  mainShelf         Books in the mainShelf. All tree (currentlyReading, wantToRead, read)
   * @param {array} [queryresults=[]] Books comming from the API via query
   *
   * @return {array} Returns an array of the combination of books between the mainShelf and the queryresults
   */
-  joinQueryShelf = (mainShelf, queryresults = []) => {
-    let joinMap = new Map()
-    for (let book of mainShelf) {
-      joinMap.set(book.id, book)
-    }
-    for (let book of queryresults) {
-      !joinMap.has(book.id) && joinMap.set(book.id, book)
-    }
-    return Array.from(joinMap.values())
+
+  joinBooksQuery = (mainShelf=[], queryresults = []) => {
+    debugger;
+    (mainShelf.length>0 || queryresults.length>0)
+    ? this.setState({joinedbooks: this.changeBooksIds(mainShelf,queryresults) })
+    : this.setState({joinedbooks: [] })
   }
 
-  /**
-   * exeQueryShelf - Helper function for joinQueryShelf
-   */
-  exeQueryShelf = () => this.joinQueryShelf(this.state.books, this.state.querybooks)
-
-  /**
-  * executeQuery - Execute the query according to the input in the SearchBar
+  /** executeQuery - Execute the query according to the input in the SearchBar
   *
   * @param {type} query String with the search query
   *
-  * @return {type} sets the querybooks state
+  * @return {type} sets the query-books state
   */
   executeQuery = query => {
-    BookApi.search(query, 10)
-      .then(data => {
-        this.setState({ querybooks: data })
-        return this.state.querybooks
-      })
-      .then(data => console.log(`the data afer executeQuery ${data}`))
-      .catch(err => console.log(`Error : ${err}`))
+    BookApi.search(query)
+        .then(data => {
+          console.log('this is the data query-books ',data);
+          (data.error && data.items.length===0)
+          ? this.resetJoinedBooks()
+          : this.joinBooksQuery(this.state.books, data)
+        })
+        .catch(err => console.log(`Error : ${err}`))
   }
 
   /**
    * updateQuery - Helper function for the executeQuery function
    */
   updateQuery = query => {
-    this.setState({ query: query.trim() })
-    if (this.state.query) this.executeQuery(this.state.query)
+    if(query && query !== ""){
+      this.setState({ query: query.trim() })
+      this.executeQuery(this.state.query)
+    }
+    this.setState({ query: '',joinedbooks:[] })//ojoooooooooooooooooooo
+  }
+
+  resetJoinedBooks = ()=>{
+    this.setState({ joinedbooks: [] })
+
   }
 
   render() {
-    let { query, querybooks, books } = this.state
+    const { query,joinedbooks  } = this.state
     return (
       <div className="App">
         <Route exact path="/search" render={history =>
             <SearchBar
               query={query}
-              books={books}
-              joinedBooks={this.exeQueryShelf()}
-              queryBooks={querybooks}
+              joinedBooks={joinedbooks}
               onMoveToShelf={this.moveToShelf}
               onQueryChange={this.updateQuery}
             />}
         />
         <Route exact path="/" render={history =>
-            <BookShelf history={history} books={this.createShelfs()} onMoveToShelf={this.moveToShelf} />}
+            <BookShelf
+              history={history}
+              resetJoinedBooks={this.resetJoinedBooks}
+              books={this.createShelfs()}
+              onMoveToShelf={this.moveToShelf} />}
         />
       </div>
     )

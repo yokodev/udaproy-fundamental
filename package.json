@@ -8,6 +8,7 @@
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.1.2",
     "react-scripts": "1.0.10",
+    "sort-by": "^1.2.0",
     "throttle-debounce": "^1.0.1"
   },
   "scripts": {
@@ -16,5 +17,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "react-addons-perf": "^15.4.2"
+  }
 }
