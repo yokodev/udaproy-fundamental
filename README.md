@@ -12,7 +12,7 @@ I'm using v 7.10.0
 
 First you need to get a copy of the App into your machine
 
-clone it and cd into the directory, install dependencies via YARN or NPM and start it up
+clone it, cd into the directory, install dependencies via YARN or NPM and start it up
 
 ```
 git clone  https://github.com/jatcode/udaproy-fundamental.git my-reads
@@ -30,4 +30,4 @@ That's it
 
 ## Authors
 
-* **Jesus  Amaya** -  [yokodev](https://github.com/yokodev) 
+* **Jesus  Amaya** -  [yokodev](https://github.com/yokodev)
