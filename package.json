@@ -7,14 +7,18 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.1.2",
-    "react-scripts": "1.0.10",
-    "throttle-debounce": "^1.0.1"
+    "react-scripts": "1.1.1",
+    "throttle-debounce": "^1.0.1",
+    "snyk": "^1.83.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "snyk": true
 }
